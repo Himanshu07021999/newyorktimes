@@ -1,57 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Row, Col, Select, Spin } from 'antd';
-import { fetchArticles } from '../services/api';
+import { Card, Row, Col, Button } from 'antd';
+import { fetchArticles } from '../services/api'; // Adjust the path as per your project structure
 
 const { Meta } = Card;
-const { Option } = Select;
 
 const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [period, setPeriod] = useState(7); // Default to 7 days
+  const [period, setPeriod] = useState(1); // Default period is 1 day
 
   useEffect(() => {
     const getArticles = async () => {
-      setLoading(true);
       const fetchedArticles = await fetchArticles(period);
       setArticles(fetchedArticles);
-      setLoading(false);
     };
-
     getArticles();
-  }, [period]);
+  }, [period]); // Fetch articles whenever period changes
 
-  const handlePeriodChange = (value) => {
-    setPeriod(value);
+  const handlePeriodChange = (newPeriod) => {
+    setPeriod(newPeriod);
   };
 
   return (
     <>
-      <h1 className='times' style={{textAlign:'center'}}>New York Times</h1>
-      <Select defaultValue={1} onChange={handlePeriodChange} style={{ marginBottom: '20px' }}>
-        <Option value={1}>1 Day</Option>
-        <Option value={7}>7 Days</Option>
-        <Option value={30}>30 Days</Option>
-      </Select>
-      {loading ? (
-        <Spin size="large" />
-      ) : (
-        <Row gutter={[16, 16]}>
-          {articles.map(article => (
-            <Col key={article.id} xs={24} sm={12} md={8} lg={6}>
-              <Link to={`/article/${article.id}`}>
-                <Card
-                  hoverable
-                  cover={<img alt={article.title} src={article.media[0]?.['media-metadata'][2]?.url || 'https://via.placeholder.com/150'} />}
-                >
-                  <Meta title={article.title} description={article.byline} />
-                </Card>
-              </Link>
-            </Col>
-          ))}
-        </Row>
-      )}
+      <h1 className='times' style={{textAlign:'center'}}>New York time </h1>
+      <div style={{ marginBottom: '16px' }}>
+        <Button type={period === 1 ? 'primary' : 'default'} onClick={() => handlePeriodChange(1)}>1 Day</Button>
+        <Button type={period === 7 ? 'primary' : 'default'} onClick={() => handlePeriodChange(7)}>7 Days</Button>
+        <Button type={period === 30 ? 'primary' : 'default'} onClick={() => handlePeriodChange(30)}>30 Days</Button>
+      </div>
+      <Row gutter={[16, 16]}>
+        {articles.map(article => (
+          <Col key={article.id} xs={24} sm={12} md={8} lg={6}>
+            <Link to={`/article/${article.id}`}>
+              <Card
+                hoverable
+                cover={<img alt={article.title} src={article.media[0]?.['media-metadata'][2]?.url || 'https://via.placeholder.com/150'} />}
+              >
+                <Meta title={article.title} description={article.byline} />
+              </Card>
+            </Link>
+          </Col>
+        ))}
+      </Row>
     </>
   );
 };
