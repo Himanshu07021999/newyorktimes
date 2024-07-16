@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const API_KEY = 'KEAPRTBguG2cCKsTZvnaVbJprseTYBN7';
 const BASE_URL = 'https://api.nytimes.com/svc/mostpopular/v2/viewed';
 
@@ -12,3 +11,4 @@ export const fetchArticles = async (period = 1) => {
     return [];
   }
 };
+

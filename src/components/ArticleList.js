@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'antd';
-import { fetchArticles } from '../services/api'; // Adjust the path as per your project structure
+import { fetchArticles } from '../services/api';
 
 const { Meta } = Card;
 
@@ -17,7 +17,7 @@ const ArticlesList = () => {
     getArticles();
   }, [period]); // Fetch articles whenever period changes
 
-  const handlePeriodChange = (newPeriod) => {
+  const handlePeriodChange = async (newPeriod) => {
     setPeriod(newPeriod);
   };
 
